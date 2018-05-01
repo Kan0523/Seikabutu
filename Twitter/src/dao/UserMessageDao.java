@@ -8,33 +8,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 import beans.UserMessage;
-import utils.SQLRuntimeException;
+
 
 public class UserMessageDao {
 
-	public List<UserMessage> getUserMessages(Connection connection,int num){
+	private Connection connection;
+	@SuppressWarnings("null")
+	public Connection getConnection() throws ClassNotFoundException{
 
 		PreparedStatement ps = null;
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT * FORM user_message ");
-			sql.append("ORDER BY insert_date DESC limit " + num);
+
+			sql.append("ORDER BY insert_date DESC limit " + connection);
+			Connection connection = null;
 
 			ps = connection.prepareStatement(sql.toString());
 
+			@SuppressWarnings("unused")
 			ResultSet rs = ps.executeQuery();
-			List<UserMessage> ret = toUserMessageList(rs);
-				return ret;
+
+
 		}catch(SQLException e) {
-			throw new SQLRuntimeException(e);
-		}finally {
-			close((ResultSet) ps);
+			e.printStackTrace();
 		}
-	}
+		return connection ;
+
+		}
+
 	private void close(ResultSet rs) {
 
 
 	}
+	@SuppressWarnings("unused")
 	private List<UserMessage> toUserMessageList(ResultSet rs) throws SQLException {
 
 		List<UserMessage> ret = new ArrayList<UserMessage>();
@@ -63,6 +70,11 @@ public class UserMessageDao {
 		}
 
 
+	}
+
+	public List<UserMessage> getUserMessages(Connection connection2, int limitNum) {
+		
+		return null;
 	}
 
 

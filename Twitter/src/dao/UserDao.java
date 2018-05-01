@@ -12,13 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import beans.User;
-import controller.NoRowsUpdatedRuntimeException;
-import utils.SQLRuntimeException;
 import utils.StreamUtil;
 
 public class UserDao {
-
-
 
 	public User getUser(Connection connection,String accountOrEmail,String password) {
 
@@ -41,10 +37,11 @@ public class UserDao {
 				return userList.get(0);
 			}
 		}catch(SQLException e) {
-			throw new SQLRuntimeException(e);
+
 		}finally {
 			close(ps);
 		}
+		return null;
 	}
 
 	private List<User> toUserList(ResultSet rs) throws SQLException{
@@ -82,12 +79,16 @@ public class UserDao {
 		}
 
 
+		private void close(ResultSet rs) {
+
+	}
+
 		private byte[] getIcon(ResultSet rs) throws SQLException{
 			byte[] ret = null;
 			InputStream binaryStream = rs.getBinaryStream("icon");
 			if(binaryStream != null) {
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				StreamUtil.copy(binaryStream,baos);
+				StreamUtil.copy1(binaryStream,baos);
 				ret = baos.toByteArray();
 			}
 			return ret;
@@ -135,7 +136,7 @@ public class UserDao {
 
 			ps.executeUpdate();
 		}catch (SQLException e) {
-			throw new SQLRuntimeException(e);
+
 		}finally {
 			close(ps);
 		}
@@ -144,7 +145,6 @@ public class UserDao {
 
 
 	private void close(PreparedStatement ps) {
-			// TODO 自動生成されたメソッド・スタブ
 
 		}
 
@@ -167,10 +167,10 @@ public class UserDao {
 				return userList.get(0);
 			}
 		}catch(SQLException e) {
-			throw new SQLRuntimeException(e);
 		}finally {
 			close(ps);
 		}
+		return null;
 	}
 
 	public void update(Connection connection, User user) {
@@ -204,17 +204,17 @@ public class UserDao {
 				ps.setTimestamp(7, new Timestamp(user.getUpdateDate().getTime()));
 			}else {
 			ps.setBinaryStream(6, new ByteArrayInputStream(user.getIcon()));
-			ps.setTimestamp(7, user.getId());
+			ps.setInt(7, user.getId());
 			ps.setTimestamp(8,new Timestamp(user.getUpdateDate().getTime()));
 		}
 
 		int count = ps.executeUpdate();
 		if(count == 0) {
-			throw new NoRowsUpdatedRuntimeException();
+
 		}
 
     }catch(SQLException e) {
-    	throw new SQLRuntimeException(e);
+
     }finally {
     	close(ps);
     }
@@ -222,7 +222,6 @@ public class UserDao {
   }
 
 	public void insert(Connection connection, org.apache.catalina.User user) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 

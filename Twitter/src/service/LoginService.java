@@ -17,7 +17,7 @@ public class LoginService {
 
 			UserDao userDao = new UserDao();
 			String encPassword = CipherUtil.encrypt(password);
-			User user = userDao.getUser(connection,accountOrEmail, encPassword);
+			User user = (User) userDao.getUser(connection,accountOrEmail, encPassword);
 
 				commit(connection);
 					return user;
@@ -69,7 +69,7 @@ public class LoginService {
 			connection = getConnection();
 
 			UserDao userDao = new UserDao();
-			User user = userDao.getUser(connection, userId);
+			User user = (User) userDao.getUser(connection, userId);
 
 			commit(connection);
 

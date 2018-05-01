@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import beans.Message;
-import exception.SQLRuntimeException;
+
 
 public class MessageDao {
 
@@ -17,7 +17,6 @@ public class MessageDao {
 			sql.append("INSERT INTO message(");
 			sql.append("id");
 			sql.append(", user_id");
-			sql.append(", ");
 			sql.append(", text");
 			sql.append(", insert_date");
 			sql.append(", update_date");
@@ -36,14 +35,16 @@ public class MessageDao {
 
 			ps.executeUpdate();
 		}catch (SQLException e) {
-			throw new SQLRuntimeException(e);
+
 		}finally {
 			close(ps);
 		}
 	}
 
 	private void close(PreparedStatement ps) {
+		}
 
+	public void insert(Connection connection, com.sun.corba.se.impl.protocol.giopmsgheaders.Message message) {
 
 	}
 

@@ -9,6 +9,7 @@
 </head>
 <body>
 <div class ="main-contents">
+<h1>Setting</h1>
 
 <c:if test="${not empty errorMessages }">
 	<div class="errorMessages">

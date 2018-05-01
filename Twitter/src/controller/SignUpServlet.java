@@ -11,10 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.User;
-
-import com.sun.xml.internal.ws.util.StringUtils;
-
+import beans.User;
 import service.UserService;
 
 @WebServlet(urlPatterns = {"/signup"})
@@ -39,7 +36,7 @@ public class SignUpServlet extends HttpServlet {
 			user.setEmail(request.getParameter("email"));
 			user.setDescription(request.getParameter("discription"));
 
-			new UserService().register(user);
+			new UserService().register((org.apache.catalina.User) user);
 
 			response.sendRedirect("./");
 		}else {
@@ -50,6 +47,7 @@ public class SignUpServlet extends HttpServlet {
 
 	private boolean isValid(HttpServletRequest request,List<String>messages) {
 		String account = request.getParameter("account");
+		@SuppressWarnings("unused")
 		String password = request.getParameter("Password");
 
 		if(StringUtils.isEmpty(account) == true) {

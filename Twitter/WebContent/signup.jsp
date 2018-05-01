@@ -8,6 +8,7 @@
 <title>ユーザ登録</title>
 </head>
 <body>
+<h1>SignUp</h1>
 <div class ="main-contents">
 <c:if test="${not empty errorMessages}">
 	<div class="errorMessages">

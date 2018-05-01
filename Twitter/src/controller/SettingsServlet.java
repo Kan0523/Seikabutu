@@ -2,6 +2,7 @@ package controller;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
-import org.omg.CORBA.portable.InputStream;
-
-import com.sun.xml.internal.ws.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import beans.User;
 import service.UserService;
@@ -33,6 +32,7 @@ public class SettingsServlet extends HttpServlet{
 		User loginUser = (User) session.getAttribute("loginUser");
 
 		if(session.getAttribute("editUser") == null) {
+
 			User editUser = new UserService().getUser(loginUser.getId());
 			session.setAttribute("editUser", editUser);
 		}
@@ -48,23 +48,27 @@ public class SettingsServlet extends HttpServlet{
 		User editUser = getEditUser(request);
 		session.setAttribute("editUser", editUser);
 
-		if(isValid(request,messages) == true) {
-			try {
-				new UserService().update(editUser);
-			}catch(NoRowsUpdatedRuntimeException e) {
-				session.removeAttribute("editUser");
-				messages.add("他のひとによって更新されています。最新のデータを表示しました。データを確認してください");
+		if(isValid(request, messages)==true) {
+
+		try {
+
+
+			new UserService().update(editUser);
+		}catch(Exception e) {
+				session.removeAttribute( "editUser");
+				messages.add("他の人によって更新されています。最新にデータを表示しました。データーを確認してください");
+				session.setAttribute("errorMessages",messages);
+				response.sendRedirect("settings");
+		}
+
+				session.setAttribute("loginUser", editUser);
+				session.removeAttribute("settings");
+
+				response.sendRedirect("./");
+			}else {
 				session.setAttribute("errorMessages", messages);
 				response.sendRedirect("settings");
-			}
 
-			session.setAttribute("loginUser", editUser);
-			session.removeAttribute("editUser");
-
-			response.sendRedirect("./");
-		}else {
-			session.setAttribute("errorMessages", messages);
-			response.sendRedirect("settings");
 		}
 	}
 	private User getEditUser(HttpServletRequest request) throws IOException,ServletException{
@@ -82,6 +86,7 @@ public class SettingsServlet extends HttpServlet{
 
 	}
 
+	@SuppressWarnings("unused")
 	private byte[] getIcon(HttpServletRequest request) throws IOException,ServletException{
 
 		Part part = request.getPart("icon");
@@ -91,9 +96,9 @@ public class SettingsServlet extends HttpServlet{
 			return icon;
 		}
 
-		InputStream inputStream = null;
+		org.omg.CORBA.portable.InputStream inputStream = null;
 		try {
-			inputStream = Part.getInputStream();
+			inputStream = (org.omg.CORBA.portable.InputStream) part.getInputStream();
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			StreamUtil.copy(inputStream,baos);
 			icon = baos.toByteArray();
@@ -107,7 +112,7 @@ public class SettingsServlet extends HttpServlet{
 
 	}
 
-	private boolean isValid(HttpServletRequest request,List<String> messages) {
+	private boolean isValid(HttpServletRequest request,List<String> messages){
 		String account = request.getParameter("account");
 		String password = request.getParameter("password");
 

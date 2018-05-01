@@ -84,7 +84,6 @@ public class UserService {
 	}
 
 	public void update(beans.User editUser) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 }

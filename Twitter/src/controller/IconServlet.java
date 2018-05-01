@@ -23,9 +23,12 @@ public class IconServlet extends HttpServlet {
 
 		String userId = request.getParameter("user_id");
 		User user = (User) new UserService().getUser(Integer.parseInt(userId));
+		System.out.println(user);
 
 		if(user == null) {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+
 		}
 
 		response.setContentType("image/png");

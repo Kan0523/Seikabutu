@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.sun.xml.internal.ws.util.StringUtils;
-
 import beans.Message;
 import beans.User;
 import service.MessageService;
@@ -33,12 +31,11 @@ HttpSession session = request.getSession();
 
 			User user = (User) session.getAttribute("loginUser");
 
-
-			Message message = new Message();
+			 Message message = new Message();
 			 message.setText(request.getParameter("message"));
 			 message.setUserId(user.getId());
 
-			new MessageService().register((com.sun.corba.se.impl.protocol.giopmsgheaders.Message) message);
+			new MessageService().register( message);
 
 			response.sendRedirect("./");
 		}else {

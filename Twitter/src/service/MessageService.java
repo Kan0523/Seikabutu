@@ -80,6 +80,11 @@ public class MessageService {
 			return null;
 		}
 
+		public void register(beans.Message message) {
+			// TODO 自動生成されたメソッド・スタブ
+
+		}
+
 
 }
 

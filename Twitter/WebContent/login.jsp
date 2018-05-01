@@ -9,6 +9,7 @@
 </head>
 <body>
 <div class = "main-contents">
+<h1>Login</h1>
 
 <c:if test="${not empty errorMessages }">
 <div class = "errorMessages">
@@ -23,9 +24,17 @@
 
 	<form action="login" method="post"><br />
 		<label for = "accountOrEmail">アカウント名かメールアドレス</label>
-		<input name = "accountOrEmail" id="accountOrEmail"/> <br />
+		<input name = "accountOrEmail" id ="accountOrEmail" /> <br />
 
-		<input type ="submit" value ="ログイン" /> <br />
+		<label for ="password">パスワード</label>
+		<input name="password" type ="password" id="password" /> <br />
+
+
+		<label for = "submit" value ="ログイン" /> <br />
+		<a href ="./">戻る</a>
+
+
+
 </form>
 <div class ="copyright">Copyright(c)Mikio Kan</div>
 </div>
